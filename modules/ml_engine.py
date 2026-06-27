@@ -11,25 +11,33 @@ from sklearn.metrics import accuracy_score, r2_score
 # ==========================================================
 # BASIC CLEANING
 # ==========================================================
+import pandas as pd
+
 def clean_data(df):
 
     df = df.copy()
 
+    # force valid dataframe
+    df = pd.DataFrame(df)
+
+    # drop fully empty columns
     df = df.dropna(axis=1, how="all")
 
     for col in df.columns:
 
-        if pd.api.types.is_numeric_dtype(df[col]):
-            df[col] = df[col].fillna(df[col].median())
-        else:
-            mode_val = df[col].mode()
-            if not mode_val.empty:
-                df[col] = df[col].fillna(mode_val[0])
+        # skip invalid columns safely
+        try:
+            if pd.api.types.is_numeric_dtype(df[col]):
+                df[col] = df[col].fillna(df[col].median())
             else:
-                df[col] = df[col].fillna("missing")
+                mode_val = df[col].mode()
+                df[col] = df[col].fillna(mode_val[0] if not mode_val.empty else "missing")
+
+        except Exception:
+            # fallback safety
+            df[col] = df[col].fillna("missing")
 
     return df
-
 
 # ==========================================================
 # ENCODING
