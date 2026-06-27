@@ -104,6 +104,10 @@ Note:
 This project uses Ollama locally for AI insights.
 For deployment, LLM features may be disabled or replaced with fallback logic.
 
+## 🚀 Live Demo
+
+Try the app here 👉 https://statagentai-x7t7dxij5vfntmicvpt9w2.streamlit.app/
+
 ## Author
 
 Sreejani Roy
